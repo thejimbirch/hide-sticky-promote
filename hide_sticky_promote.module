@@ -1,0 +1,39 @@
+<?php
+
+/**
+ * @file
+ * Hides the "promote to front page" and "sticky" checkboxes on nodes.
+ */
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function hide_sticky_promote_form_node_type_form_alter(&$form, &$form_state, $form_id) {
+  // Remove sticky/promote entirely from add and edit content type forms.
+  $options = array('promote', 'sticky');
+  foreach ($options as $key) {
+    unset($form['workflow']['node_options']['#options'][$key]);
+  }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function hide_sticky_promote_form_node_form_alter(&$form, &$form_state, $form_id) {
+  // Remove sticky/promote entirely from node/X/edit & node/X/add forms.
+  $options = array('promote', 'sticky');
+  foreach ($options as $key) {
+    $form['options'][$key]['#access'] = FALSE;
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function hide_sticky_promote_form_node_admin_content_alter(&$form, &$form_state, $form_id) {
+  // Remove some sticky/promote update options on admin/content.
+  $options = array('demote', 'promote', 'sticky', 'unsticky');
+  foreach ($options as $key) {
+    unset($form['admin']['options']['operation']['#options'][$key]);
+  }
+}
